@@ -25,19 +25,6 @@ testem.log
 bower.json.ember-try
 package.json.ember-try
 
-addon/**/*.js
-app/**/*.js
-adapters/*.d.ts
-mixins/*.d.ts
-authenticators/*.d.ts
-authorizers/*.d.ts
-serializers/*.d.ts
-services/*.d.ts
-session-stores/*.d.ts
-torii-adapters/*.d.ts
-torii-providers/*.d.ts
-initializers/*.d.ts
 vendor/**/node_modules
 vendor/**/tmp
 vendor/**/DEBUG
-index.d.ts

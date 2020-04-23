@@ -2,7 +2,6 @@ import Mixin from '@ember/object/mixin';
 import { inject as service } from '@ember/service';
 import { get } from '@ember/object';
 import { getOwner } from '@ember/application';
-
 export default Mixin.create({
     firebaseApp: service('firebase-app'),
     router: service('router'),
@@ -20,6 +19,6 @@ export default Mixin.create({
                 analytics.setCurrentScreen(screen_name || url, { global: true });
                 analytics.logEvent("screen_view", { app_name, screen_name, url, app_version });
             });
-        })
+        });
     }
 });
