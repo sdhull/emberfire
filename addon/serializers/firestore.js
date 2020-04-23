@@ -4,7 +4,7 @@ import { singularize } from 'ember-inflector';
 // TODO aside from .data(), key vs. id, metadata, and subcollection this is basicly realtime-database, should refactor to reuse
 export default class FirestoreSerializer extends DS.JSONSerializer {
     normalizeSingleResponse(store, primaryModelClass, payload, _id, _requestType) {
-        if (!payload.exists) {
+        if (!payload || !payload.exists) {
             throw new DS.NotFoundError();
         }
         const meta = extractMeta(payload);
