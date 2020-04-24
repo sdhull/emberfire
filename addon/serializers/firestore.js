@@ -4,13 +4,13 @@ import { singularize } from 'ember-inflector';
 // TODO aside from .data(), key vs. id, metadata, and subcollection this is basicly realtime-database, should refactor to reuse
 export default class FirestoreSerializer extends DS.JSONSerializer {
     normalizeSingleResponse(store, primaryModelClass, payload, _id, _requestType) {
-        if (!payload.exists) {
-            throw new DS.NotFoundError();
+        if (!payload || !payload.exists) {
+            return { data: null };
         }
         const meta = extractMeta(payload);
         let normalized = normalize(store, primaryModelClass, payload);
         this.applyTransforms(primaryModelClass, normalized.data.attributes);
-        return Object.assign(Object.assign({}, normalized), { meta });
+        return Object.assign({}, normalized, { meta });
     }
     normalizeArrayResponse(store, primaryModelClass, payload, _id, _requestType) {
         const normalizedPayload = payload.docs.map(snapshot => {
@@ -33,7 +33,7 @@ function isQuerySnapshot(arg) {
 const extractMeta = (snapshot) => {
     if (isQuerySnapshot(snapshot)) {
         const query = snapshot.query;
-        return Object.assign(Object.assign({}, snapshot.metadata), { query });
+        return Object.assign({}, snapshot.metadata, { query });
     }
     else {
         return snapshot.metadata;
@@ -123,7 +123,7 @@ export const normalize = (store, modelClass, snapshot) => {
     const id = snapshot.id;
     const type = modelClass.modelName;
     const _ref = snapshot.ref;
-    const attributes = Object.assign(Object.assign({}, snapshot.data()), { _ref });
+    const attributes = Object.assign({}, snapshot.data(), { _ref });
     const { relationships, included } = normalizeRelationships(store, modelClass, snapshot);
     const data = { id, type, attributes, relationships };
     return { data, included };
